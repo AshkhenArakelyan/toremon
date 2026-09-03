@@ -7,7 +7,7 @@ A personal task management application.
 ## Features
 
 - Authentication
-- Create lists
+- Create task lists
 - Create tasks
 - Mark tasks as completed
 - Track progress

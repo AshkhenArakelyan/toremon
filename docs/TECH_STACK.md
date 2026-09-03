@@ -1,7 +1,7 @@
 # Tech Stack
 
 This document records the confirmed technology decisions for Toremon App, a personal
-task management application (authentication, lists, tasks, completion, progress tracking).
+task management application (authentication, task lists, tasks, completion, progress tracking).
 
 For each technology it describes what it is used for, what it is responsible for, and
 why it was chosen. This stack is fixed; changes should be made by updating this document
@@ -28,7 +28,7 @@ REST API, which owns authentication, authorization, validation, and persistence.
 
 ### React 19
 
-**Used for:** Building the entire user interface — the login screen, list overview, task
+**Used for:** Building the entire user interface — the login screen, task list overview, task
 views, and the progress indicators.
 
 **Responsibility:** Rendering the UI and reacting to user interaction. React owns the
@@ -44,7 +44,7 @@ composition of screens from reusable components.
 that mirror the API's request and response payloads.
 
 **Responsibility:** Enforcing a compile-time contract across the codebase. TypeScript is
-the single source of truth for the shape of a `Task`, a `List`, and a `User` on the client,
+the single source of truth for the shape of a `Task`, a `TaskList`, and a `User` on the client,
 and it guards the boundaries where data enters the app from the REST API.
 
 **Why we chose it:** A task app is full of small, similar-looking objects, and type errors
@@ -69,7 +69,7 @@ maintaining a custom build setup.
 
 ### Zustand
 
-**Used for:** Client-side state that is not owned by the server — UI preferences such as the active list or current filter (all / active / completed), and any cross-component view state.
+**Used for:** Client-side state that is not owned by the server — UI preferences such as the active task list or current filter (all / active / completed), and any cross-component view state.
 
 **Responsibility:** Holding global client state and exposing it to components through selector-based subscriptions, so that components subscribe only to the state they need.
 
@@ -77,7 +77,7 @@ maintaining a custom build setup.
 
 ### TanStack Query
 
-**Used for:** Every interaction with the REST API — fetching lists and tasks, creating and
+**Used for:** Every interaction with the REST API — fetching task lists and tasks, creating and
 updating them, and toggling completion.
 
 **Responsibility:** Owning all server state on the client. It handles caching, request
@@ -107,7 +107,7 @@ rules, and database access.
 
 **Responsibility:** Being the authoritative layer of the system. Laravel defines the REST
 endpoints, validates and authorizes every incoming request, enforces that users can only
-reach their own lists and tasks, applies domain rules, persists data through Eloquent, and
+reach their own task lists and tasks, applies domain rules, persists data through Eloquent, and
 manages the database schema through migrations.
 
 **Why we chose it:** Laravel ships with the pieces this application needs already built and
@@ -128,16 +128,16 @@ the selected Laravel version.
 
 ### MySQL 8+
 
-**Used for:** Persistent storage of all application data — users, lists, tasks, and their
+**Used for:** Persistent storage of all application data — users, task lists, tasks, and their
 completion state.
 
 **Responsibility:** Durably storing data and guaranteeing its integrity. MySQL enforces
-relationships between users, lists, and tasks through foreign keys, applies uniqueness and
+relationships between users, task lists, and tasks through foreign keys, applies uniqueness and
 other constraints, and provides transactional guarantees so that multi-step writes either
 fully succeed or fully roll back.
 
-**Why we chose it:** The data here is clearly relational — a user has many lists, a list has
-many tasks — so a relational database is the natural fit, and progress tracking is expressed
+**Why we chose it:** The data here is clearly relational — a user has many task lists, and a
+task list has many tasks — so a relational database is the natural fit, and progress tracking is expressed
 directly as aggregate queries over tasks.
 
 ---
@@ -153,8 +153,8 @@ directly as aggregate queries over tasks.
 **Used for:** The contract between the frontend and the backend. All communication between
 the React app and Laravel happens over REST endpoints exchanging JSON.
 
-**Responsibility:** Defining the boundary of the system — resource-oriented URLs for lists and
-tasks, HTTP verbs mapped to operations (`GET` to read, `POST` to create, `PATCH`/`PUT` to update,
+**Responsibility:** Defining the boundary of the system — resource-oriented URLs for task lists
+and tasks, HTTP verbs mapped to operations (`GET` to read, `POST` to create, `PATCH`/`PUT` to update,
 `DELETE` to remove), meaningful status codes, and a consistent JSON envelope for both successful
 responses and errors.
 
