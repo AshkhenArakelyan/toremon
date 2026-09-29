@@ -31,12 +31,15 @@ without updating this document first.
 - A task list name cannot be empty.
 - A task list name has a maximum length of 100 characters.
 
-### Daily creation limit
+### Active task list limit
 
-- A user can create a maximum of 5 task lists per calendar day.
-- The limit counts task lists **created that day**, not the number of task lists the user
-  currently has.
-- Deleting a task list does not restore the user's daily task list creation allowance.
+- A user can have a maximum of 5 active task lists at a time.
+- If the user currently has 5 active task lists, they cannot create another task list.
+- If the user has fewer than 5 active task lists, they can create a new one.
+- When a task list is deleted, the user's active task list count decreases.
+- After deleting a task list, the user can create a new one as long as they have fewer than
+  5 active task lists.
+- There is no daily creation limit.
 
 ### Managing a task list
 
@@ -110,6 +113,6 @@ The numeric limits stated above, collected for quick reference:
 | Constraint | Value |
 | --- | --- |
 | Maximum task list name length | 100 characters |
-| Maximum task lists created per calendar day, per user | 5 |
+| Maximum active task lists per user | 5 |
 | Maximum task title length | 255 characters |
 | Maximum tasks per task list | 100 |
